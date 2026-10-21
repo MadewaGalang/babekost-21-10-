@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -9,34 +10,38 @@ use Illuminate\Support\Facades\Hash;
 class AdminUserSeeder extends Seeder
 {
     /**
-     * Membuat SATU akun admin (pemilik) secara otomatis. Sesuai bagian 2:
-     * registrasi admin TIDAK tersedia untuk umum — akun ini satu-satunya
-     * jalan masuk, dipakai bersama oleh suami & istri di dua perangkat.
+     * Membuat SATU akun admin (pemilik): satu baris di `users` (role=admin)
+     * dan satu baris profil di `admins`. Registrasi admin TIDAK tersedia
+     * untuk umum, jadi akun ini satu-satunya jalan masuk.
      *
-     * Kredensial diambil dari .env supaya tidak ter-hardcode di kode
-     * (lihat ADMIN_EMAIL / ADMIN_PASSWORD di .env.example). Memakai
-     * updateOrCreate agar seeder aman dijalankan ulang (idempotent).
+     * Kredensial dari .env (ADMIN_EMAIL / ADMIN_PASSWORD / ADMIN_PHONE).
+     * Idempotent: aman dijalankan ulang.
      */
     public function run(): void
     {
         $email = env('ADMIN_EMAIL', 'pemilik@babekost.test');
         $password = env('ADMIN_PASSWORD', 'babekost-admin-passphrase');
+        $phone = env('ADMIN_PHONE', '081234567890');
 
-        User::withTrashed()->updateOrCreate(
-            ['email' => $email],
-            [
-                'name' => 'Pemilik Babekost',
-                'password' => Hash::make($password),
-                'role' => 'admin',
-                'email_verified_at' => now(),
-                'deleted_at' => null,
-            ]
-        );
+        $user = User::withTrashed()->firstOrNew(['email' => $email]);
+        $user->forceFill([
+            'name' => 'Pemilik Babekost',
+            'password' => Hash::make($password),
+            'role' => 'admin',
+            'email_verified_at' => now(),
+            'deleted_at' => null,
+        ])->save();
+
+        $admin = Admin::withTrashed()->firstOrNew(['user_id' => $user->id]);
+        $admin->forceFill([
+            'phone' => $phone,
+            'deleted_at' => null,
+        ])->save();
 
         $this->command?->info("Akun admin siap: {$email}");
         if (! env('ADMIN_PASSWORD')) {
             $this->command?->warn(
-                'ADMIN_PASSWORD belum diset di .env — memakai password default. '
+                'ADMIN_PASSWORD belum diset di .env, memakai password default. '
                 . 'Ganti sebelum deploy!'
             );
         }

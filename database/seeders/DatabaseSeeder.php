@@ -2,30 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // Seeder user admin — wajib dijalankan lebih dulu
-        $this->call([
-            AdminUserSeeder::class,
-            // Seeder data lokasi/kamar contoh ditambahkan di Hari 5-6,
-            // setelah CRUD bangunan & kamar ada.
-        ]);
+        // Akun admin dibutuhkan di semua lingkungan (lokal maupun server).
+        $this->call(AdminUserSeeder::class);
 
-        // User dummy untuk testing/development lokal
-        User::factory()->create([
-            'name'  => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // Data contoh hanya untuk pengembangan lokal.
+        if (app()->environment('local')) {
+            $this->call([
+                CatalogSeeder::class,     // bangunan, kamar, fasilitas
+                DemoTenantSeeder::class,  // penyewa dan booking contoh
+            ]);
+        }
     }
 }
