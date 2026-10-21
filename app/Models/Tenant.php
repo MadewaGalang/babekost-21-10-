@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -10,22 +9,22 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Tenant extends Model
 {
-    use HasFactory, SoftDeletes;
+    use SoftDeletes;
 
-    protected $fillable = [
-        'user_id',
-        'phone',
-        'emergency_contact',
-        'campus_or_job',
-    ];
+    protected $fillable = ['user_id', 'phone', 'emergency_contact', 'campus_or_job'];
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function rentals(): HasMany
+    public function bookings(): HasMany
     {
-        return $this->hasMany(Rental::class);
+        return $this->hasMany(Booking::class);
+    }
+
+    public function complaints(): HasMany
+    {
+        return $this->hasMany(Complaint::class);
     }
 }
