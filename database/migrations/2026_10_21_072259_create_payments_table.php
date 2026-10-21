@@ -7,22 +7,18 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Tabel pembayaran. `receipt_number` dibuat unik dengan pola yang
-     * sama seperti users/rooms (kolom generated `receipt_sort`) supaya
-     * nomor kwitansi yang sudah di-soft-delete (misal input keliru lalu
-     * dihapus admin) bisa dipakai ulang tanpa bentrok (bagian 10).
-     *
-     * `destination_account` mencatat ke rekening siapa (suami/istri)
-     * transfer dilakukan — berlaku sama untuk semua kamar & lokasi
-     * (bagian 4.1). `proof_path` menunjuk ke file di private storage,
-     * bukan public disk (bagian 7 Stack: Laravel private storage).
+     * `receipt_number` nullable: baru diisi saat admin memverifikasi.
+     * `verified_by` menunjuk ke admin yang memverifikasi.
+     * `proof_path` menunjuk ke private storage.
      */
     public function up(): void
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('rental_id')->constrained()->restrictOnDelete();
-            $table->string('receipt_number');
+            $table->foreignId('booking_id')->constrained()->restrictOnDelete();
+            $table->foreignId('verified_by')->nullable()
+                ->constrained('admins')->nullOnDelete();
+            $table->string('receipt_number')->nullable();
             $table->enum('type', ['dp', 'pelunasan']);
             $table->unsignedBigInteger('amount');
             $table->date('paid_at');
@@ -39,8 +35,8 @@ return new class extends Migration
 
         Schema::table('payments', function (Blueprint $table) {
             $table->unsignedBigInteger('receipt_sort')
-            ->storedAs('IF(`deleted_at` IS NULL, 0, TO_SECONDS(`deleted_at`))')
-            ->after('deleted_at');
+                ->storedAs('IF(`deleted_at` IS NULL, 0, TO_SECONDS(`deleted_at`))')
+                ->after('deleted_at');
             $table->unique(
                 ['receipt_number', 'receipt_sort'],
                 'payments_receipt_number_active_unique'

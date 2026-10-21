@@ -7,22 +7,14 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     /**
-     * Tabel rental (penyewaan). Status mengikuti alur di bagian 4.3:
-     * menunggu_pembayaran -> booking (DP terverifikasi) -> aktif (lunas,
-     * masa sewa berjalan) -> selesai. Cabang: dibatalkan (oleh penyewa
-     * atau otomatis saat belum lunas di hari mulai sewa -> DP hangus).
-     *
-     * Perpanjangan SELALU membuat row baru (bukan update row lama) agar
-     * riwayat & laporan tetap bersih (bagian 4.4) — karena itu TIDAK ada
-     * kolom "parent_rental_id"; tampilan "Kos Saya" cukup query semua
-     * rental milik tenant_id yang sama, diurutkan tanggal.
-     *
-     * Index (room_id, start_date, end_date) dipakai saat Hari 8 nanti
-     * untuk cek ketersediaan kamar berdasarkan rentang tanggal.
+     * Alur status: menunggu_pembayaran -> booking (DP terverifikasi)
+     * -> aktif (lunas) -> selesai. Cabang: dibatalkan.
+     * Perpanjangan selalu membuat row baru. `cleaned_at` menandai
+     * pembersihan H+1 setelah masa sewa berakhir sudah dilakukan.
      */
     public function up(): void
     {
-        Schema::create('rentals', function (Blueprint $table) {
+        Schema::create('bookings', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tenant_id')->constrained()->restrictOnDelete();
             $table->foreignId('room_id')->constrained()->restrictOnDelete();
@@ -41,17 +33,18 @@ return new class extends Migration
             $table->timestamp('house_rules_agreed_at')->nullable();
             $table->timestamp('cancelled_at')->nullable();
             $table->string('cancellation_reason')->nullable();
+            $table->timestamp('cleaned_at')->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
-            $table->index(['room_id', 'start_date', 'end_date'], 'rentals_availability_index');
-            $table->index(['tenant_id'], 'rentals_tenant_index');
+            $table->index(['room_id', 'start_date', 'end_date'], 'bookings_availability_index');
+            $table->index(['tenant_id'], 'bookings_tenant_index');
         });
     }
 
     public function down(): void
     {
-        Schema::dropIfExists('rentals');
+        Schema::dropIfExists('bookings');
     }
 };

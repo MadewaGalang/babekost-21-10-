@@ -6,11 +6,7 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Profil penyewa, 1:1 dengan `users` (role=penyewa). Sesuai revisi
-     * di bagian 7: TIDAK ada upload KTP, hanya data yang benar-benar
-     * diperlukan (no HP, kontak darurat, kampus/pekerjaan).
-     */
+    /** Profil penyewa, 1:1 dengan users (role=penyewa). Tanpa upload KTP. */
     public function up(): void
     {
         Schema::create('tenants', function (Blueprint $table) {
