@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -12,18 +13,38 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, SoftDeletes;
 
-    // `role` sengaja tidak di-fillable: registrasi publik tidak boleh
-    // bisa menentukan role sendiri. Default di database adalah 'penyewa'.
-    protected $fillable = ['name', 'email', 'password'];
+    // `role` dan `is_active` sengaja tidak di-fillable: registrasi publik
+    // tidak boleh menentukan role atau status akun sendiri.
+    // Default di database: role = 'penyewa', is_active = true.
+    protected $fillable = ['name', 'phone', 'username', 'email', 'password'];
 
     protected $hidden = ['password', 'remember_token'];
 
     protected function casts(): array
     {
         return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
+            'password'  => 'hashed',
+            'is_active' => 'boolean',
         ];
+    }
+
+    // Setiap nomor HP otomatis disimpan dalam format 08xxxxxxxxxx.
+    protected function phone(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => self::normalizePhone($value),
+        );
+    }
+
+    public static function normalizePhone(?string $value): string
+    {
+        $digits = preg_replace('/\D+/', '', $value ?? '');
+
+        if (str_starts_with($digits, '62')) {
+            $digits = '0' . substr($digits, 2);
+        }
+
+        return $digits;
     }
 
     public function admin(): HasOne
