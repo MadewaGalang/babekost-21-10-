@@ -10,10 +10,7 @@ class Gallery extends Model
 {
     use SoftDeletes;
 
-    protected $fillable = [
-        'category', 'building_id', 'room_id',
-        'title', 'photo_path', 'description',
-    ];
+    protected $fillable = ['category', 'building_id', 'room_id', 'title', 'photo_path', 'description'];
 
     public function building(): BelongsTo
     {

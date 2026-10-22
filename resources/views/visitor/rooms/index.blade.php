@@ -18,8 +18,8 @@
             @foreach (['semua' => 'Semua', 'kosong' => 'Kosong', 'terisi' => 'Terisi'] as $key => $label)
                 @php $active = $filter === $key; @endphp
                 <a href="{{ route('visitor.rooms', array_filter(['status' => $key === 'semua' ? null : $key, 'q' => $search ?: null])) }}"
-                   class="rounded-full border px-3 py-1 text-xs font-medium
-                          {{ $active ? 'border-gold-border bg-tint-gold text-gold-700' : 'border-line-chip bg-white text-slate' }}">
+                    class="rounded-full border px-3 py-1 text-xs font-medium
+                    {{ $active ? 'border-gold-border bg-tint-gold text-gold-700' : 'border-line-chip bg-white text-slate' }}">
                     {{ $label }} {{ $key === 'semua' ? $counts['semua'] : '' }}
                 </a>
             @endforeach
