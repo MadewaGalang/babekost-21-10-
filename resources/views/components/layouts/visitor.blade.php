@@ -20,7 +20,7 @@
             ['label' => 'Home',    'route' => 'home',            'icon' => 'home'],
             ['label' => 'Rooms',   'route' => 'visitor.rooms',   'icon' => 'icon-bed'],
             ['label' => 'Gallery', 'route' => 'visitor.gallery', 'icon' => 'photo'],
-            ['label' => 'Promo',   'route' => 'visitor.promos',  'icon' => 'megaphone'],
+            ['label' => 'Announcements',   'route' => 'visitor.announcements',  'icon' => 'megaphone'],
             ['label' => 'Login',   'route' => 'login',           'icon' => 'arrow-right-end-on-rectangle'],
         ]" />
     </x-slot:nav>

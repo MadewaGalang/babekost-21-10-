@@ -94,32 +94,36 @@
             </a>
         </section>
 
-        {{-- Promo dan agenda --}}
+        {{-- Announcement --}}
         <section class="space-y-2">
             @foreach ($promos as $promo)
-                <x-card class="flex items-center gap-3 p-3">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
-                        <x-heroicon-o-megaphone class="h-5 w-5" />
-                    </span>
-                    <div class="flex-1">
-                        <p class="text-xs font-semibold">{{ $promo->title }}</p>
-                        <p class="text-[11px] text-slate">Promo aktif</p>
-                    </div>
-                    <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
-                </x-card>
+                <a href="{{ route('visitor.announcements') }}" class="block">
+                    <x-card class="flex items-center gap-3 p-3">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
+                            <x-heroicon-o-megaphone class="h-5 w-5" />
+                        </span>
+                        <div class="flex-1">
+                            <p class="text-xs font-semibold">{{ $promo->title }}</p>
+                            <p class="text-[11px] text-slate">Promo aktif</p>
+                        </div>
+                        <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
+                    </x-card>
+                </a>
             @endforeach
 
             @foreach ($agendas as $agenda)
-                <x-card class="flex items-center gap-3 p-3">
-                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
-                        <x-heroicon-o-heart class="h-5 w-5" />
-                    </span>
-                    <div class="flex-1">
-                        <p class="text-xs font-semibold">{{ $agenda->title }}</p>
-                        <p class="text-[11px] text-slate">{{ \Carbon\Carbon::parse($agenda->agenda_date)->translatedFormat('d M Y') }}</p>
-                    </div>
-                    <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
-                </x-card>
+                <a href="{{ route('visitor.announcements', ['tab' => 'agenda']) }}" class="block">
+                    <x-card class="flex items-center gap-3 p-3">
+                        <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
+                            <x-heroicon-o-heart class="h-5 w-5" />
+                        </span>
+                        <div class="flex-1">
+                            <p class="text-xs font-semibold">{{ $agenda->title }}</p>
+                            <p class="text-[11px] text-slate">{{ \Carbon\Carbon::parse($agenda->agenda_date)->translatedFormat('d M Y') }}</p>
+                        </div>
+                        <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
+                    </x-card>
+                </a>
             @endforeach
         </section>
 
