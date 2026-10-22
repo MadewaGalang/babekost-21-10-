@@ -19,6 +19,7 @@ return new class extends Migration
             $table->foreignId('building_id')->constrained()->cascadeOnDelete();
             $table->string('number');
             $table->string('type')->nullable();
+            $table->unsignedTinyInteger('capacity')->default(1);
             $table->unsignedBigInteger('price_monthly');
             $table->unsignedBigInteger('price_quarterly');
             $table->unsignedBigInteger('price_yearly');

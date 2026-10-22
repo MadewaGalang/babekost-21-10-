@@ -14,7 +14,7 @@ class Room extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'building_id', 'number', 'type',
+        'building_id', 'number', 'type', 'capacity',
         'price_monthly', 'price_quarterly', 'price_yearly',
         'special_status',
     ];
@@ -22,6 +22,7 @@ class Room extends Model
     protected function casts(): array
     {
         return [
+            'capacity' => 'integer',
             'price_monthly' => 'integer',
             'price_quarterly' => 'integer',
             'price_yearly' => 'integer',

@@ -16,10 +16,10 @@
 
         {{-- Nama dan alamat --}}
         <div>
-            <h2 class="text-base font-bold">Babekost</h2>
+            <h2 class="text-base font-bold">{{ $building?->name ?? 'Babekost' }}</h2>
             <p class="mt-0.5 flex items-start gap-1 text-xs text-slate">
                 <x-heroicon-o-map-pin class="mt-0.5 h-4 w-4 shrink-0 text-gold-700" />
-                Jl. Mertojoyo Bar., Merjosari, Kec. Lowokwaru, Kota Malang
+                {{ $building?->address ?? '-' }}
             </p>
         </div>
 
@@ -27,11 +27,13 @@
         <div class="grid grid-cols-2 gap-3">
             <x-card class="p-3">
                 <p class="text-[11px] text-slate">Harga mulai</p>
-                <p class="mt-0.5 text-sm font-bold">Rp 6.500.000/thn</p>
+                <p class="mt-0.5 text-sm font-bold">
+                    {{ $startPrice ? 'Rp ' . number_format($startPrice, 0, ',', '.') . '/thn' : '-' }}
+                </p>
             </x-card>
             <x-card class="p-3">
                 <p class="text-[11px] text-slate">Kamar tersedia</p>
-                <p class="mt-0.5 text-sm font-bold">14 dari 60</p>
+                <p class="mt-0.5 text-sm font-bold">{{ $availableCount }} dari {{ $totalRooms }}</p>
             </x-card>
         </div>
 
@@ -43,17 +45,19 @@
         <section>
             <div class="mb-2 flex items-center justify-between">
                 <h3 class="text-sm font-semibold">Aksi cepat</h3>
-                <a href="#" class="text-xs font-medium text-gold-700">Lihat semua</a>
+                <a href="{{ route('visitor.rooms') }}" class="text-xs font-medium text-gold-700">Lihat semua</a>
             </div>
             <div class="grid grid-cols-2 gap-3">
-                @foreach ([['Kamar 02', 'Rp 6.500.000/thn'], ['Kamar 04', 'Rp 6.500.000/thn']] as [$nama, $harga])
-                    <x-card class="p-2">
-                        <div class="flex h-20 items-center justify-center rounded-lg" style="background: var(--grad-photo)">
-                            <x-heroicon-o-photo class="h-6 w-6 text-gold-500" />
-                        </div>
-                        <p class="mt-2 text-xs font-semibold">{{ $nama }}</p>
-                        <p class="text-[11px] text-slate">{{ $harga }}</p>
-                    </x-card>
+                @foreach ($quickRooms as $room)
+                    <a href="{{ route('visitor.rooms.show', $room) }}">
+                        <x-card class="p-2">
+                            <div class="flex h-20 items-center justify-center rounded-lg" style="background: var(--grad-photo)">
+                                <x-heroicon-o-photo class="h-6 w-6 text-gold-500" />
+                            </div>
+                            <p class="mt-2 text-xs font-semibold">Kamar {{ $room->number }}</p>
+                            <p class="text-[11px] text-slate">Rp {{ number_format($room->price_yearly, 0, ',', '.') }}/thn</p>
+                        </x-card>
+                    </a>
                 @endforeach
             </div>
         </section>
@@ -62,7 +66,7 @@
         <section>
             <h3 class="mb-2 text-sm font-semibold">Fasilitas</h3>
             <div class="flex flex-wrap gap-2">
-                @foreach (['AC', 'Kasur', 'Lemari', 'WiFi'] as $f)
+                @foreach ($facilities as $f)
                     <span class="rounded-full border border-line-chip bg-white px-3 py-1 text-xs">{{ $f }}</span>
                 @endforeach
             </div>
@@ -83,7 +87,7 @@
                     referrerpolicy="no-referrer-when-downgrade"
                     title="Lokasi Babekost"></iframe>
             </div>
-            <a href="https://www.google.com/maps/search/?api=1&query={{ $lat }},{{ $lng }}"
+            <a href="{{ $building?->maps_url ?? 'https://www.google.com/maps/search/?api=1&query=' . $lat . ',' . $lng }}"
                 target="_blank" rel="noopener"
                 class="mt-2 flex items-center gap-1 text-xs font-medium text-gold-700">
                 <x-heroicon-o-map-pin class="h-4 w-4" /> Buka di Google Maps
@@ -92,14 +96,27 @@
 
         {{-- Promo dan agenda --}}
         <section class="space-y-2">
-            @foreach ([['Diskon sewa tahunan', 'Promo aktif', 'megaphone'], ['Santunan anak yatim', '20 Sep 2026', 'heart']] as [$judul, $sub, $ikon])
+            @foreach ($promos as $promo)
                 <x-card class="flex items-center gap-3 p-3">
                     <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
-                        <x-dynamic-component :component="'heroicon-o-' . $ikon" class="h-5 w-5" />
+                        <x-heroicon-o-megaphone class="h-5 w-5" />
                     </span>
                     <div class="flex-1">
-                        <p class="text-xs font-semibold">{{ $judul }}</p>
-                        <p class="text-[11px] text-slate">{{ $sub }}</p>
+                        <p class="text-xs font-semibold">{{ $promo->title }}</p>
+                        <p class="text-[11px] text-slate">Promo aktif</p>
+                    </div>
+                    <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
+                </x-card>
+            @endforeach
+
+            @foreach ($agendas as $agenda)
+                <x-card class="flex items-center gap-3 p-3">
+                    <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
+                        <x-heroicon-o-heart class="h-5 w-5" />
+                    </span>
+                    <div class="flex-1">
+                        <p class="text-xs font-semibold">{{ $agenda->title }}</p>
+                        <p class="text-[11px] text-slate">{{ \Carbon\Carbon::parse($agenda->agenda_date)->translatedFormat('d M Y') }}</p>
                     </div>
                     <x-heroicon-o-chevron-right class="h-4 w-4 text-muted" />
                 </x-card>
