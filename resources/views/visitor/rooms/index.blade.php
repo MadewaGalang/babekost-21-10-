@@ -26,10 +26,10 @@
         </div>
 
         {{-- Daftar kamar --}}
-        <div class="space-y-3">
+        <div class="flex flex-col gap-4">
             @forelse ($rooms as $room)
                 @php $available = isset($availableIds[$room->id]); @endphp
-                <a href="{{ route('visitor.rooms.show', $room) }}">
+                <a href="{{ route('visitor.rooms.show', $room) }}" class="block">
                     <x-card class="flex items-center gap-3 p-3">
                         <div class="flex h-14 w-14 shrink-0 items-center justify-center rounded-lg" style="background: var(--grad-photo)">
                             <x-heroicon-o-photo class="h-5 w-5 text-gold-500" />
