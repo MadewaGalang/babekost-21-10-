@@ -1,0 +1,94 @@
+/* ==========================================================
+    BABE KOS - DESIGN TOKENS (warna dan opacity)
+    Dipakai di seluruh tampilan Admin, Penyewa, dan Pengunjung.
+    Kode emas adalah perkiraan dari logo. Ganti --gold-500 jika
+    ada kode warna resmi, lalu turunkan emas lainnya darinya.
+    Nilai "solid di atas putih" dihitung dari warna dasar x opacity.
+    ========================================================== */
+
+:root {
+
+  /* ---------- 1. WARNA MEREK (dari logo) ---------- */
+    --gold-700: #7A5A12;   /* tombol utama, teks dan ikon aktif (kontras 6,4:1 di atas putih) */
+    --gold-500: #A67C1F;   /* warna daun logo, grafik, progress, placeholder foto */
+    --gold-300: #D4A93F;   /* jendela logo, sorotan di latar gelap, dasar tint emas */
+    --gold-50:  #F7EFDC;   /* latar emas muda solid (setara gold-300 pada 18% di atas putih) */
+
+    /* ---------- 2. NETRAL ---------- */
+    --ink:      #141414;   /* judul, kartu utama (keuangan), warna rumah logo */
+    --slate:    #5B5B57;   /* teks sekunder, ikon aksi app bar */
+    --muted:    #7A7A74;   /* ikon dan label tab tidak aktif, chevron, ikon input */
+    --line:     #EFECE4;   /* garis kartu, pembatas app bar dan footer */
+    --line-chip:#E3DFD3;   /* border chip tidak aktif */
+    --handle:   #D9D5C9;   /* indikator home, titik carousel tidak aktif, gradasi foto akhir */
+    --canvas:   #F8F7F4;   /* latar halaman */
+    --white:    #FFFFFF;   /* kartu, app bar, footer, status bar */
+    --track:    #EFE7D2;   /* latar bar progres hunian */
+
+    /* Teks di atas kartu hitam (Ink) */
+    --on-ink:        #FFFFFF;
+    --on-ink-soft:   #CFCBBF;  /* label Pemasukan, Pengeluaran */
+    --on-ink-muted:  #9C978A;  /* label bulan grafik */
+    --on-ink-accent: #D4A93F;  /* label Laba, bulan aktif (= gold-300) */
+
+    /* ---------- 3. STATUS ---------- */
+    --success: #2F7D4F;    /* terverifikasi, kosong, selesai, aktif */
+    --warning: #B8651B;    /* menunggu, terbooking, segera berakhir */
+    --danger:  #C0392B;    /* ditolak, badge notifikasi, logout, hapus */
+
+    /* ---------- 4. TINT DENGAN OPACITY (latar tile, tag, badge) ----------
+        Cara pakai: rgba(warna dasar, opacity). Komentar = hasil solid di atas putih. */
+    --tint-gold:     rgba(212, 169, 63, 0.18);  /* #F7EFDC  tile ikon emas, pill tab aktif, chip aktif, tombol lonceng */
+    --tint-success:  rgba(47, 125, 79, 0.12);   /* #E6EFEA  tile hijau, tag Terverifikasi, Aktif, Tersedia */
+    --tint-warning:  rgba(184, 101, 27, 0.14);  /* #F5E9DF  tile oranye, tag Menunggu, Terbooking */
+    --tint-ink:      rgba(20, 20, 20, 0.09);    /* #EAEAEA  tile netral, tag Kosong, Nonaktif, Terisi */
+    --tint-danger:   rgba(192, 57, 43, 0.10);   /* #F9EBEA  tile Logout, tag Baru, Sisa hari */
+
+    /* ---------- 5. OPACITY KOMPONEN LAIN ---------- */
+    --track-segmented:      rgba(20, 20, 20, 0.06);    /* #EAE9E7 di atas canvas. Latar segmented control */
+    --pressed-ink:          rgba(20, 20, 20, 0.04);    /* #F6F6F6 di atas putih. Baris atau kartu saat ditekan */
+    --pressed-icon:         rgba(20, 20, 20, 0.06);    /* lingkaran 40 px di belakang ikon saat ditekan */
+    --pressed-danger:       rgba(192, 57, 43, 0.10);   /* lingkaran di belakang ikon hapus saat ditekan */
+    --fill-danger-soft:     rgba(192, 57, 43, 0.08);   /* #FAEFEE. Latar tombol Tolak, Nonaktifkan */
+    --border-danger:        rgba(192, 57, 43, 0.40);   /* #E6B0AA. Border tombol Tolak, Nonaktifkan */
+    --border-gold-chip:     rgba(122, 90, 18, 0.40);   /* #CABDA0. Border chip aktif, tombol outline emas */
+    --divider-on-ink:       rgba(255, 255, 255, 0.14); /* garis pemisah dan garis dasar grafik di kartu hitam */
+    --counter-chip:         rgba(20, 20, 20, 0.60);    /* chip penghitung foto (1/3) */
+    --overlay-viewer:       rgba(20, 20, 20, 0.92);    /* latar foto layar penuh */
+    --photo-caption-start:  rgba(20, 20, 20, 0.55);    /* gradasi judul foto galeri, dari bawah (55%) ke atas (0%) */
+    --disabled-icon-opacity: 0.4;                      /* ikon panah bulan berikutnya jika dinonaktifkan */
+
+    /* ---------- 6. BAYANGAN ---------- */
+    --shadow-segment-active: 0 1px 3px rgba(20, 20, 20, 0.08);   /* segmen aktif */
+    --shadow-fab:            0 4px 12px rgba(20, 20, 20, 0.18);  /* tombol tambah melayang */
+    --shadow-frame:          0 4px 18px rgba(20, 20, 20, 0.12);  /* hanya untuk mockup, bukan layar aplikasi */
+
+    /* ---------- 7. GRADIEN ---------- */
+    --grad-progress: linear-gradient(90deg, #A67C1F, #D4A93F);   /* bar tingkat hunian */
+    --grad-photo:    linear-gradient(135deg, #EFE7D2, #D9D5C9);  /* placeholder foto dan avatar */
+
+    /* ---------- 8. TOKEN SEMANTIK (pasangan latar + warna ikon/teks) ---------- */
+    --tile-gold-bg:    var(--tint-gold);     --tile-gold-fg:    var(--gold-700);
+    --tile-success-bg: var(--tint-success);  --tile-success-fg: var(--success);
+    --tile-warning-bg: var(--tint-warning);  --tile-warning-fg: var(--warning);
+    --tile-ink-bg:     var(--tint-ink);      --tile-ink-fg:     var(--ink);
+    --tile-danger-bg:  var(--tint-danger);   --tile-danger-fg:  var(--danger);
+
+    --tab-active-fg:   var(--gold-700);  --tab-active-pill: var(--tint-gold);
+    --tab-inactive-fg: var(--muted);
+
+    --btn-primary-bg:  var(--gold-700);  --btn-primary-fg:  var(--white);
+    --btn-outline-bd:  var(--border-gold-chip); --btn-outline-fg: var(--gold-700);
+    --btn-danger-bg:   var(--fill-danger-soft); --btn-danger-bd: var(--border-danger); --btn-danger-fg: var(--danger);
+
+    --badge-alert-bg:  var(--danger);    --badge-alert-fg:  var(--white);  /* badge angka merah */
+    --badge-dark-bg:   var(--ink);       --badge-dark-fg:   var(--white);  /* badge Keluhan */
+    }
+
+    /* ==========================================================
+    ALTERNATIF SOLID (tanpa opacity)
+    Dipakai di versi awal dashboard. Sedikit lebih hangat/jenuh
+    dibanding hasil opacity. Pilih salah satu pendekatan saja.
+    ----------------------------------------------------------
+    emas   #F7EFDC   hijau  #E4F3EA   oranye #FBEBD6   netral #ECEAE4
+    ========================================================== */
