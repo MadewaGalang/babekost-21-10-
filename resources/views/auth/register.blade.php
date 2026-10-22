@@ -1,4 +1,9 @@
 <x-layouts.visitor title="Login">
+    <x-slot:action>
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-tint-gold text-gold-700">
+            <x-heroicon-o-arrow-right-end-on-rectangle class="h-5 w-5" />
+        </span>
+    </x-slot:action>
     <div class="px-4 pt-6">
         <img src="{{ asset('images/logo.png') }}" alt="Babe Kos" class="mx-auto h-16">
 

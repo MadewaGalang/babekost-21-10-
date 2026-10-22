@@ -1,11 +1,16 @@
 <x-layouts.visitor title="Gallery">
+    <x-slot:action>
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-tint-gold text-gold-700">
+            <x-heroicon-o-photo class="h-5 w-5" />
+        </span>
+    </x-slot:action>
     <div class="space-y-3 p-4">
 
         {{-- Tab --}}
         <div class="flex rounded-lg bg-segmented p-1 text-xs font-medium">
             @foreach (['bangunan' => 'Bangunan', 'kamar' => 'Per kamar'] as $key => $label)
                 <a href="{{ route('visitor.gallery', ['tab' => $key]) }}"
-                   class="flex-1 rounded-md py-2 text-center {{ $tab === $key ? 'bg-white text-ink shadow-segment' : 'text-slate' }}">
+                    class="flex-1 rounded-md py-2 text-center {{ $tab === $key ? 'bg-white text-ink shadow-segment' : 'text-slate' }}">
                     {{ $label }}
                 </a>
             @endforeach
@@ -17,8 +22,8 @@
                 <div class="flex gap-2 overflow-x-auto pb-1">
                     @foreach ($rooms as $r)
                         <a href="{{ route('visitor.gallery', ['tab' => 'kamar', 'room' => $r->id]) }}"
-                           class="shrink-0 rounded-full border px-3 py-1 text-xs font-medium
-                                  {{ $selected?->id === $r->id ? 'border-gold-border bg-tint-gold text-gold-700' : 'border-line-chip bg-white text-slate' }}">
+                            class="shrink-0 rounded-full border px-3 py-1 text-xs font-medium
+                                {{ $selected?->id === $r->id ? 'border-gold-border bg-tint-gold text-gold-700' : 'border-line-chip bg-white text-slate' }}">
                             Kamar {{ $r->number }}
                         </a>
                     @endforeach

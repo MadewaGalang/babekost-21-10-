@@ -1,10 +1,16 @@
-<x-layouts.visitor title="Announcement">
-    <div class="space-y-3 p-4">
+<x-layouts.visitor title="News">
+    <x-slot:action>
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-tint-gold text-gold-700">
+            <x-heroicon-o-megaphone class="h-5 w-5" />
+        </span>
+    </x-slot:action>
+
+    <div class="flex flex-col gap-4 p-4">
 
         {{-- Tab --}}
         <div class="flex rounded-lg bg-segmented p-1 text-xs font-medium">
             @foreach (['promo' => 'Promo', 'agenda' => 'Agenda santunan'] as $key => $label)
-                <a href="{{ route('visitor.announcements', ['tab' => $key]) }}"
+                <a href="{{ route('visitor.news', ['tab' => $key]) }}"
                     class="flex-1 rounded-md py-2 text-center {{ $tab === $key ? 'bg-white text-ink shadow-segment' : 'text-slate' }}">
                     {{ $label }}
                 </a>
@@ -47,7 +53,7 @@
                 <p class="py-6 text-center text-sm text-slate">Belum ada agenda mendatang.</p>
             @endforelse
 
-            <h3 class="pt-2 text-sm font-semibold">Dokumentasi sebelumnya</h3>
+            <h3 class="text-sm font-semibold">Dokumentasi sebelumnya</h3>
             @forelse ($past as $agenda)
                 <x-card class="space-y-2 p-3">
                     <div>

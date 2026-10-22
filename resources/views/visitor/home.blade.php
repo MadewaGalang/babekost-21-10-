@@ -94,10 +94,10 @@
             </a>
         </section>
 
-        {{-- Announcement --}}
+        {{-- News --}}
         <section class="space-y-2">
             @foreach ($promos as $promo)
-                <a href="{{ route('visitor.announcements') }}" class="block">
+                <a href="{{ route('visitor.news') }}" class="block">
                     <x-card class="flex items-center gap-3 p-3">
                         <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
                             <x-heroicon-o-megaphone class="h-5 w-5" />
@@ -112,7 +112,7 @@
             @endforeach
 
             @foreach ($agendas as $agenda)
-                <a href="{{ route('visitor.announcements', ['tab' => 'agenda']) }}" class="block">
+                <a href="{{ route('visitor.news', ['tab' => 'agenda']) }}" class="block">
                     <x-card class="flex items-center gap-3 p-3">
                         <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-tint-gold text-gold-700">
                             <x-heroicon-o-heart class="h-5 w-5" />
