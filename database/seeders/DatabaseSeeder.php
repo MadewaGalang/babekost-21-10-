@@ -13,5 +13,11 @@ class DatabaseSeeder extends Seeder
             CatalogSeeder::class,
             BabeKostDataSeeder::class,
         ]);
+        $user = \App\Models\User::create([
+            'name'     => 'Penyewa Uji',
+            'phone'    => '081200000001',
+            'password' => 'password123',
+        ]);
+        $user->tenant()->create(['phone' => $user->phone]);
     }
 }

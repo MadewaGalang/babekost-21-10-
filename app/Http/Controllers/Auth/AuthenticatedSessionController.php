@@ -24,11 +24,18 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
+        dd('sampai store', $request->all());
+
         $request->authenticate();
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $user = $request->user();
+
+        // Admin ke dashboard, penyewa ke beranda penghuni.
+        return redirect()->intended(
+            $user->isAdmin() ? route('dashboard') : route('tenant.home')
+        );
     }
 
     /**

@@ -13,7 +13,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
             $table->string('phone');
-            $table->string('emergency_contact');
+            $table->string('emergency_contact')->nullable();
             $table->string('campus_or_job')->nullable();
             $table->timestamps();
             $table->softDeletes();

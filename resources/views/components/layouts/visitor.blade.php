@@ -21,7 +21,7 @@
             ['label' => 'Rooms',   'route' => 'visitor.rooms',   'icon' => 'icon-bed'],
             ['label' => 'Gallery', 'route' => 'visitor.gallery', 'icon' => 'photo'],
             ['label' => 'News',   'route' => 'visitor.news',  'icon' => 'megaphone'],
-            ['label' => 'Login',   'route' => 'login',           'icon' => 'arrow-right-end-on-rectangle'],
+            ['label' => 'Login', 'route' => 'login', 'icon' => 'arrow-right-end-on-rectangle', 'match' => ['login', 'register']],
         ]" />
     </x-slot:nav>
 </x-mobile-shell>

@@ -38,6 +38,8 @@ class LoginRequest extends FormRequest
             'is_active' => true,
         ];
 
+        dd($credentials, Auth::attempt($credentials));   // <-- tambahkan baris ini
+
         if (! Auth::attempt($credentials, $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
