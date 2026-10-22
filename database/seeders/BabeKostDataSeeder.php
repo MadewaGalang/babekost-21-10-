@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Building;
+use App\Models\Facility;
 use App\Models\Room;
 use Illuminate\Database\Seeder;
 
@@ -29,6 +30,12 @@ class BabeKostDataSeeder extends Seeder
             ['Babe Kost Tlogomas', 'Jl. Tlogosari No.643 A RT 03 RW 05, Merjosari, Kec. Lowokwaru, Kota Malang', 17, 'T'],
         ];
 
+        // Fasilitas standar tiap kamar, dengan jumlah dan kondisi.
+        $pivot = Facility::whereIn('name', ['Kasur', 'Lemari', 'Meja belajar', 'WiFi'])
+            ->pluck('id')
+            ->mapWithKeys(fn ($id) => [$id => ['quantity' => 1, 'condition' => 'Baik']])
+            ->all();
+
         foreach ($buildings as [$name, $address, $count, $prefix]) {
             // ASUMSI: semua bangunan putra.
             $building = Building::create([
@@ -38,7 +45,7 @@ class BabeKostDataSeeder extends Seeder
             ]);
 
             for ($i = 1; $i <= $count; $i++) {
-                Room::create([
+                $room = Room::create([
                     'building_id'     => $building->id,
                     'number'          => $prefix . $i,
                     'capacity'        => 1,
@@ -46,6 +53,8 @@ class BabeKostDataSeeder extends Seeder
                     'price_quarterly' => self::PRICE_QUARTERLY,
                     'price_yearly'    => self::PRICE_YEARLY,
                 ]);
+
+                $room->facilities()->attach($pivot);
             }
         }
     }
